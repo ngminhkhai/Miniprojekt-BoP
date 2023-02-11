@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Assets/Player/Character run2.png" type="Texture" id=1]
+[ext_resource path="res://Player1.gd" type="Script" id=2]
+[ext_resource path="res://Assets/sounds/jump1.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Player/Character run1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Player/Character slide.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Player/Character jump.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Player/shieldfull.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Player/shieldhalf.png" type="Texture" id=8]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 36.0
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 24.9999
+height = 22.0002
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "slide",
+"speed": 5.0
+} ]
+
+[node name="Player1" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="Neutral" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Slide" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 16 )
+rotation = 1.5708
+shape = SubResource( 2 )
+disabled = true
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( -0.500003, 2.86102e-06 )
+scale = Vector2( 1.14062, 1.28125 )
+frames = SubResource( 3 )
+animation = "run"
+playing = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+
+[node name="SoundJump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -7.0
+
+[node name="FullShield" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 7 )
+
+[node name="HalfShield" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 8 )
+
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

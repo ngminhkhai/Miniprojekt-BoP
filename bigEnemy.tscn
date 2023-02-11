@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/sounds/pepSound2.ogg" type="AudioStream" id=1]
+[ext_resource path="res://bigEnemy.gd" type="Script" id=2]
+[ext_resource path="res://Assets/enemyBig/Monster.png" type="Texture" id=3]
+[ext_resource path="res://Assets/enemyBig/Monster2.png" type="Texture" id=4]
+[ext_resource path="res://Assets/enemyBig/Monster3.png" type="Texture" id=5]
+[ext_resource path="res://Assets/enemyBig/Monster4.png" type="Texture" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "crawl",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "gethurt",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 53.5, 23.5 )
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 24.0
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 32, 12.75 )
+
+[node name="bigEnemy" type="KinematicBody2D"]
+collision_layer = 16
+collision_mask = 35
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "crawl"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 9.5 )
+rotation = 1.5708
+shape = SubResource( 2 )
+one_way_collision = true
+
+[node name="floor_checker" type="RayCast2D" parent="."]
+cast_to = Vector2( 0, 70 )
+collision_mask = 2
+
+[node name="top_checker" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 33
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top_checker"]
+position = Vector2( 1, -31 )
+shape = SubResource( 5 )
+
+[node name="sides_checker" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 33
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sides_checker"]
+position = Vector2( 0, 50.75 )
+shape = SubResource( 4 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.032
+
+[node name="Soundquash" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+volume_db = 1.0
+
+[connection signal="body_entered" from="top_checker" to="." method="_on_top_checker_body_entered"]
+[connection signal="body_entered" from="sides_checker" to="." method="_on_sides_checker_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
