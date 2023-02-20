@@ -10,4 +10,3 @@ Items can be collected like a shield or coins to get a buff or earn more coins.
 
 Code in Gd-skript and made with Godot 3.5
 
-This Projekt was done in 3-4 weeks in a team of two. It´s the first Projekt I did in Godot, So I did a little bit of everthing. But I was mainly in charge of building the foundation (player movement, level creation, and Menus. I also did most of the graphics, ). 
